@@ -1,5 +1,5 @@
 # Zedunio
-A simple high-level C++ header only library for the Atmel AVR microcontroler, focused on Arduino. <br/>
+A simple high-level C++ header only library for the Atmel AVR microcontroler, focused on Arduino UNO. <br/>
 This library provide a simple interface to build a executable project in a small time. <br/>
 This project was entirely made using Atmel Studio.
 

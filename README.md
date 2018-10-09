@@ -41,3 +41,5 @@ void loop() {
   // instead you can use led->Blink(1000);
 }
 ```
+# Usefull Information
+This library was tested using an Arduino UNO.

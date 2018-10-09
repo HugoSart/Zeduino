@@ -19,8 +19,8 @@ Another feature is a "main" interface, replacing the default main function of yo
 
 ```c++
 #define F_CPU 16000000UL
-#define ZEDUINO_LAUNCHER // This tells the compiler that you gonna use the setup and loop function, 
-                         // otherwise you gonna need to create your own main and main loop
+#define ZEDUINO_LAUNCHER // This tells the compiler that you'll use the setup and loop function, 
+                         // otherwise you'll need to create your own main and main loop
 
 #include <zeduino/zeduino.hpp>
 

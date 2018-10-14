@@ -1,5 +1,5 @@
 /*
-* Zeduino.h
+* zeduino.hpp
 *
 * Created: 02/10/2018 22:05:03
 *  Author: hugo_
@@ -13,6 +13,7 @@
 #include "util.hpp"
 #include "port.hpp"
 #include "component.hpp"
+#include "debug.hpp"
 
 namespace zeduino {}
 
@@ -24,6 +25,7 @@ void loop();
 
 extern "C" {
 	int main() {
+		uart_init();
 		setup();
 		while (true) loop();
 		return 0;

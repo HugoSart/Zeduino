@@ -33,7 +33,7 @@ namespace zeduino {
 			else if (m == OUTPUT) set_bit(fcrio(port), nmr(port));
 		}
 		
-		inline bool get_mode(EPort port) {
+		inline EMode get_mode(EPort port) {
 			return tst_bit(fcrio(port), nmr(port));
 		}
 		

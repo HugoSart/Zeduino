@@ -18,7 +18,12 @@ main.d main.o: .././main.cpp ../../Zeduino/include/zeduino/zeduino.hpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  ../../Zeduino/include/zeduino/port.hpp \
- ../../Zeduino/include/zeduino/component.hpp
+ ../../Zeduino/include/zeduino/component.hpp \
+ ../../Zeduino/include/zeduino/debug.hpp \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
+ ../../Zeduino/include/zeduino/serial/uart.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\setbaud.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h
 
 ../../Zeduino/include/zeduino/zeduino.hpp:
 
@@ -61,3 +66,13 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../../Zeduino/include/zeduino/port.hpp:
 
 ../../Zeduino/include/zeduino/component.hpp:
+
+../../Zeduino/include/zeduino/debug.hpp:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
+
+../../Zeduino/include/zeduino/serial/uart.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\setbaud.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:

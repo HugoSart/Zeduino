@@ -34,7 +34,8 @@ LINKER_SCRIPT_DEP:=
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
 ../include \
-../include/zeduino
+../include/zeduino \
+../include/zeduino/serial
 
 
 # Add inputs and outputs from these tool invocations to the build variables 

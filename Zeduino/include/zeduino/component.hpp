@@ -32,9 +32,31 @@ namespace zeduino {
 			public: inline void TurnOff() { disable(_port);	}
 			public: inline void Toggle() { if (is_enabled(_port)) disable(_port); else enable(_port); }
 			
-			public: inline void Blink(const uint8_t time) {
+			public: inline void Blink(const uint16_t time) {
 				Toggle();
 				util::delay_ms(time);
+			}
+			
+		};
+		
+		class Button : public Component {
+		
+			public: enum EAction {
+				PRESSED, RELEASED
+			}
+			
+			public: enum EDetection {
+				ONE, CONTINUOUSLY	
+			};
+		
+			private: const EPort _pullUp, _pressed;
+			private: const EAction _action;
+			private: const EDetection _detection;
+		
+			public: Button(EAction action, EDetection detection, EPort pullUp, EPort pressed) : action(_action), detection(_detection), pullUp(_pullUp), pressed(_pressed) {}
+				
+			public: bool IsPressed() {
+				return port::read(_pressed);
 			}
 			
 		};
@@ -43,147 +65,58 @@ namespace zeduino {
 			
 			private: EPort _port[8];
 			
-			public: Display7(EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) {
-				_port[0] = a; _port[1] = b; _port[2] = c; _port[3] = d; _port[4] = e; _port[5] = f; _port[6] = g; _port[7] = h;
+			public: enum EType {
+				CATHODE, ANODE	
+			};
+			
+			public: EType type;
+			
+			public: Display7(EType type, EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : type(type) {
+				_port[0] = a; _port[1] = b; _port[2] = c; _port[3] = d; _port[4] = e; _port[5] = f; _port[6] = g; _port[7] = h; 
 			}
 			
-			public: void SetDotVisibility(bool b) { enable(_port[7], b); }
-			public: bool IsDotVisible() { return is_enabled(_port[7]); }
+			public: Display7(EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : Display7(CATHODE, a, b, c, d, e, f, g, h) {}
+			
+			public: void SetDotVisibility(bool b) { enable(_port[7], IsCathode() == true ? b : !b); }
+			public: bool IsDotVisible() { return IsCathode() == true? is_enabled(_port[7]) : !is_enabled(_port[7]); }
 			
 			public: void SetValue(uint8 hex) {
+				
 				if (hex > 15) hex = 15;
 				else if (hex < 0) hex = 0;
 				
-				if (hex == 0x0) {
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					disable(_port[6]);
-				} else if (hex == 0x1) {
-					disable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					disable(_port[3]);
-					disable(_port[4]);
-					disable(_port[5]);
-					disable(_port[6]);
-				} else if (hex == 0x2) {
-					enable(_port[0]);
-					enable(_port[1]);
-					disable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					disable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x3) {
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					disable(_port[4]);
-					disable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x4) {
-					disable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					disable(_port[3]);
-					disable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x5) {
-					enable(_port[0]);
-					disable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					disable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x6) {
-					enable(_port[0]);
-					disable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x7) {
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					disable(_port[3]);
-					disable(_port[4]);
-					disable(_port[5]);
-					disable(_port[6]);
-				} else if (hex == 0x8) {
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0x9) {
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					disable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0xA) { // A
-					enable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					disable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0xB) { 
-					disable(_port[0]);
-					disable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0xC) { 
-					enable(_port[0]);
-					disable(_port[1]);
-					disable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					disable(_port[6]);
-				} else if (hex == 0xD) { 
-					disable(_port[0]);
-					enable(_port[1]);
-					enable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					disable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0xE) {
-					enable(_port[0]);
-					disable(_port[1]);
-					disable(_port[2]);
-					enable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				} else if (hex == 0xF) {
-					enable(_port[0]);
-					disable(_port[1]);
-					disable(_port[2]);
-					disable(_port[3]);
-					enable(_port[4]);
-					enable(_port[5]);
-					enable(_port[6]);
-				}
+				if (hex == 0x0) EnablePins(true, true, true, true, true, true, false);
+				else if (hex == 0x1) EnablePins(false, true, true, false, false, false, false);
+				else if (hex == 0x2) EnablePins(true, true, false, true, true, false, true);
+				else if (hex == 0x3) EnablePins(true, true, true, true, false, false, true);
+				else if (hex == 0x4) EnablePins(false, true, true, false, false, true, true);
+				else if (hex == 0x5) EnablePins(true, false, true, true, false, true, true);
+				else if (hex == 0x6) EnablePins(true, false, true, true, true, true, true);
+				else if (hex == 0x7) EnablePins(true, true, true, false, false, false, false);
+				else if (hex == 0x8) EnablePins(true, true, true, true, true, true, true);
+				else if (hex == 0x9) EnablePins(true, true, true, true, false, true, true);
+				else if (hex == 0xA) EnablePins(true, true, true, false, true, true, true);
+				else if (hex == 0xB) EnablePins(false, false, true, true, true, true, true);
+				else if (hex == 0xC) EnablePins(true, false, false, true, true, true, false);
+				else if (hex == 0xD) EnablePins(false, true, true, true, true, false, true);
+				else if (hex == 0xE) EnablePins(true, false, false, true, true, true, true);
+				else if (hex == 0xF) EnablePins(true, false, false, false, true, true, true);
 				
+			}
+			
+			private: inline bool IsCathode() {
+				return type == CATHODE;
+			}
+			
+			private: void EnablePins(bool a, bool b, bool c, bool d, bool e, bool f, bool g) {
+				bool inv = IsCathode();
+				enable(_port[0], inv == true ? a : !a);
+				enable(_port[1], inv == true ? b : !b);
+				enable(_port[2], inv == true ? c : !c);
+				enable(_port[3], inv == true ? d : !d);
+				enable(_port[4], inv == true ? e : !e);
+				enable(_port[5], inv == true ? f : !f);
+				enable(_port[6], inv == true ? g : !g);
 			}
 				
 				

@@ -39,7 +39,7 @@ namespace zeduino {
 			
 		};
 		
-		class Button : public Component {
+		/*class Button : public Component {
 		
 			public: enum EAction {
 				PRESSED, RELEASED
@@ -59,7 +59,7 @@ namespace zeduino {
 				return port::read(_pressed);
 			}
 			
-		};
+		};*/
 		
 		class Display7 : public Component {
 			

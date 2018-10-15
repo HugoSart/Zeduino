@@ -34,7 +34,7 @@ namespace zeduino {
 		}
 		
 		inline EMode get_mode(EPort port) {
-			return tst_bit(fcrio(port), nmr(port));
+			return (EMode)tst_bit(fcrio(port), nmr(port));
 		}
 		
 		inline void enable(EPort port) {

@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include "util.hpp"
 #include "port.hpp"
+#include "debug.hpp"
 
 using namespace zeduino::port;
 
@@ -35,6 +36,7 @@ namespace zeduino {
 			public: inline void Blink(const uint16_t time) {
 				Toggle();
 				util::delay_ms(time);
+				Toggle();
 			}
 			
 		};
@@ -142,6 +144,7 @@ namespace zeduino {
 				count = TCNT1;
 				
 				uint16 ret = (uint16)(count / 116);
+				printf("\ndistancia: %d\n", ret);
 				util::delay_ms(60);
 				
 				return ret;

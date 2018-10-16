@@ -9,11 +9,12 @@
 #ifndef ZEDUINO_H_
 #define ZEDUINO_H_
 
-#include <avr/interrupt.h>
+#include <avr/io.h>
 #include "util.hpp"
 #include "port.hpp"
 #include "component.hpp"
-#include "debug.hpp"
+#include "util.hpp"
+#include "clock.hpp"
 
 namespace zeduino {}
 
@@ -26,6 +27,7 @@ void loop();
 extern "C" {
 	int main() {
 		uart_init();
+		zeduino::clock::prescaler(zeduino::clock::PS1);
 		setup();
 		while (true) loop();
 		return 0;

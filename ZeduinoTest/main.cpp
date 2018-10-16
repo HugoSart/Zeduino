@@ -6,15 +6,27 @@
 
 using namespace zeduino;
 
+#define TRIGGER P2
+#define ECHO P3
+#define LED P13
+
 component::Sonar *sonar;
+component::Led *led;
 
 void setup() {
-	port::mode(P6, INPUT);
-	port::mode(P7, OUTPUT);
-	sonar = new component::Sonar(P7, P6);
+	
+	port::mode(TRIGGER, OUTPUT);
+	port::mode(LED, OUTPUT);
+	
+	sonar = new component::Sonar(TRIGGER, ECHO);
+	led = new component::Led(LED);
+	
+	led->TurnOn();
+	
 }
 
 void loop() {
-	debug::log("distancia: " + sonar->ReadDistance());
+	uint16 distance = sonar->ReadDistance();
+	led->Blink(distance * 10);
 }
 

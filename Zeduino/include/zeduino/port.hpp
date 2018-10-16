@@ -54,7 +54,7 @@ namespace zeduino {
 			return tst_bit(fcrof(port), nmr(port));
 		}
 		
-		inline uint16 read(EPort port) {
+		inline bool read(EPort port) {
 			return tst_bit(fcrin(port), nmr(port));
 		}
 		

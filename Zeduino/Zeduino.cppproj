@@ -161,10 +161,10 @@
     <Folder Include="include\zeduino\serial" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="include\zeduino\component.hpp">
+    <Compile Include="include\zeduino\clock.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\zeduino\debug.hpp">
+    <Compile Include="include\zeduino\component.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\zeduino\port.hpp">

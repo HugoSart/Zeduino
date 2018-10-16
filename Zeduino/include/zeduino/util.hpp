@@ -40,14 +40,6 @@ namespace zeduino {
 	
 	namespace util {
 		
-		enum EPrescaler {
-			PS0 = CS00, PS1 = CS01, PS2 = CS02
-		};
-		
-		void prescaler(EPrescaler p) {
-			set_bit(TCCR1B, p);
-		}
-		
 		void delay_ms(uint16 time) {
 			// TODO: Implementar em assembly
 			while (time > 0) {

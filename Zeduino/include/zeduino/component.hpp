@@ -26,10 +26,15 @@ namespace zeduino {
 			
 			private: const EPort _port;
 			
-			public: Led(EPort port) : _port(port) {}
+			public: Led(EPort port) : _port(port) {
+				#ifdef ZEDUINO_AUTO
+				mode(port, OUTPUT);
+				#endif
+			}
 			
 			public: inline bool IsOn() { return is_enabled(_port); }
 			public: inline void TurnOn() { enable(_port); }
+			public: inline void TurnOn(bool b) { enable(_port, b); }
 			public: inline void TurnOff() { disable(_port);	}
 			public: inline void Toggle() { if (is_enabled(_port)) disable(_port); else enable(_port); }
 			
@@ -37,31 +42,56 @@ namespace zeduino {
 				Toggle();
 				util::delay_ms(time);
 				Toggle();
+				util::delay_ms(time);
 			}
 			
 		};
 		
-		/*class Button : public Component {
+		class Button : public Component {
 		
-			public: enum EAction {
-				PRESSED, RELEASED
+			private: EPort _input;
+			private: bool _alreadyPressed = false;
+			private: bool _lastState = false;
+		
+			public: Button(EPort input) : _input(input) {
+				#ifdef ZEDUINO_AUTO
+				mode(input, INPUT);
+				#endif
 			}
 			
-			public: enum EDetection {
-				ONE, CONTINUOUSLY	
-			};
-		
-			private: const EPort _pullUp, _pressed;
-			private: const EAction _action;
-			private: const EDetection _detection;
-		
-			public: Button(EAction action, EDetection detection, EPort pullUp, EPort pressed) : action(_action), detection(_detection), pullUp(_pullUp), pressed(_pressed) {}
+			public: inline bool IsPressed() {
+				return !port::read(_input);
+			}
+			
+			public: bool JustPressed() {
 				
-			public: bool IsPressed() {
-				return port::read(_pressed);
+				bool isPressed = IsPressed();
+				
+				if (isPressed && _alreadyPressed) {
+					return false;
+				} else if (_alreadyPressed) {
+					_alreadyPressed = false;
+				} else if (isPressed) { 
+					_alreadyPressed = true; 
+					return true; 
+				}
+				
+				return false;
+				
 			}
 			
-		};*/
+			public: bool JustReleased() {
+				
+				if (_lastState && !IsPressed()) {
+					_lastState = false;
+					return true;
+				}
+				
+				_lastState = IsPressed();
+				return false;
+			}
+			
+		};
 		
 		class Display7 : public Component {
 			
@@ -75,9 +105,13 @@ namespace zeduino {
 			
 			public: Display7(EType type, EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : type(type) {
 				_port[0] = a; _port[1] = b; _port[2] = c; _port[3] = d; _port[4] = e; _port[5] = f; _port[6] = g; _port[7] = h; 
+				#ifdef ZEDUINO_AUTO
+				for (auto &p : _port)
+					mode(p, OUTPUT);
+				#endif
 			}
 			
-			public: Display7(EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : Display7(CATHODE, a, b, c, d, e, f, g, h) {}
+			public: Display7(EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : Display7(ANODE, a, b, c, d, e, f, g, h) {}
 			
 			public: void SetDotVisibility(bool b) { enable(_port[7], IsCathode() == true ? b : !b); }
 			public: bool IsDotVisible() { return IsCathode() == true? is_enabled(_port[7]) : !is_enabled(_port[7]); }
@@ -129,8 +163,13 @@ namespace zeduino {
 			private: const EPort _triggerPort, _echoPort;
 			private: uint16 count;
 			
-			public: Sonar(EPort triggerPort, EPort echoPort) : _triggerPort(triggerPort), _echoPort(echoPort) {}
-				
+			public: Sonar(EPort triggerPort, EPort echoPort) : _triggerPort(triggerPort), _echoPort(echoPort) {
+				#ifdef ZEDUINO_AUTO
+				mode(triggerPort, OUTPUT);
+				mode(echoPort, INPUT);
+				#endif
+			}
+					
 			public: uint16 ReadDistance() {
 				
 				port::enable(_triggerPort);

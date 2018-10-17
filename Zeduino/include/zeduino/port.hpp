@@ -24,10 +24,6 @@ namespace zeduino {
 			P8, P9, P10, P11, P12, P13 // DDRB
 		};
 		
-		enum EState {
-			ENABLED, DISABLED
-		};
-		
 		void mode(EPort port, EMode m) {
 			if (m == INPUT) clr_bit(fcrio(port), nmr(port));
 			else if (m == OUTPUT) set_bit(fcrio(port), nmr(port));

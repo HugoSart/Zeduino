@@ -5,7 +5,7 @@ This project was entirely made using Atmel Studio.
 
 # How does it works?
 This library works with components. <br/>
-For now, we have 5 different components ready to use:
+For now, we have 4 different components ready to use:
 - Led;
 - Button;
 - 7 Segment Display;

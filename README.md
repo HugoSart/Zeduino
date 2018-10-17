@@ -9,10 +9,9 @@ For now, we have 5 different components ready to use:
 - Led;
 - Button;
 - 7 Segment Display;
-- Sonar;
-- Temperature Sensor;
+- Ultrassonic Sensor;
 <br/>
-Also, it has functions that provides delay with variable time parameter, easy I/O manipulation (e.g. enabling a port, or set a port as input/output) and wave form generation. <br/>
+Also, it has functions that provides delay with variable time parameter, easy I/O manipulation (e.g. enabling a port, or set a port as input/output), wave form generation and serial communication, so feel free to use the good old printf. <br/>
 Another feature is a "main" interface, replacing the default main function of your C++ code with a setup and loop function that you gonna implement (as well as Arduino).
 
 # Example
@@ -21,6 +20,7 @@ Another feature is a "main" interface, replacing the default main function of yo
 #define F_CPU 16000000UL
 #define ZEDUINO_LAUNCHER // This tells the compiler that you'll use the setup and loop function, 
                          // otherwise you'll need to create your own main and main loop
+#define ZEDUINO_AUTO	 // Automatic set mode (input/output) inside components constructors;
 
 #include <zeduino/zeduino.hpp>
 
@@ -30,7 +30,7 @@ component::Led *led; // Simple global variable that refers to a led component
 
 // Called before entering the main loop
 void setup() {
-	port::mode(P0, OUTPUT);       // Set P0 (port 0 in Arduino) as output
+	// port::mode(P0, OUTPUT);    // Not necessery if ZEDUINO_AUTO is defined
 	led = new component::Led(P0); // Create a new instance of Led connected to the port 0
 }
 

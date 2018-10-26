@@ -2,20 +2,20 @@
 #define ZEDUINO_LAUNCHER
 #define ZEDUINO_AUTO
 
+#include <util/delay.h>
 #include <zeduino/zeduino.hpp>
 
 using namespace zeduino;
 
-component::Led *led;
-component::Button *button;
-
 void setup() {
-	led = new component::Led(P8);
-	button = new component::Button(P9);
-	led->TurnOff();
+	//port::mode(P5, OUTPUT);
 }
 
 void loop() {
-	led->TurnOn(button->IsPressed());
+	//port::enable(P5);
+	port::ctc(P6, 2000);
+	//util::delay_ms(1000);
+	//port::disable(P5);
+	//util::delay_ms(1000);
 }
 

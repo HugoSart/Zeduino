@@ -40,18 +40,28 @@ namespace zeduino {
 	
 	namespace util {
 		
-		void delay_ms(uint16 time) {
-			// TODO: Implementar em assembly
+		inline void delay_ms(uint16 time) {
 			while (time > 0) {
-				_delay_ms(1);
+				asm volatile(
+					"    ldi  r18, 21"	"\n"
+					"    ldi  r19, 199"	"\n"
+					"1:  dec  r19"		"\n"
+					"    brne 1b"		"\n"
+					"    dec  r18"		"\n"
+					"    brne 1b"		"\n"
+				);
 				time--;
 			}
 		}
 		
-		void delay_us(uint16 time) {
-			// TODO: Implementar em assembly
+		inline void delay_us(uint16 time) {
 			while (time > 0) {
-				_delay_us(1);
+				asm volatile(
+					"    ldi  r18, 5"	"\n"
+					"1:  dec  r18"		"\n"
+					"    brne 1b"		"\n"
+					"    nop"			"\n"
+				);
 				time--;
 			}
 		}

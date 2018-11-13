@@ -68,13 +68,13 @@ namespace zeduino {
 			#endif
 			
 			if(port == P6){
-				set_bit(TCCR0A, WGM01); // Ativa o modo CTC
-				set_bit(TCCR0A, COM0A0); // Configura o modo CTC = OCR0A
+				_SET_BIT(TCCR0A, WGM01); // Ativa o modo CTC
+				_SET_BIT(TCCR0A, COM0A0); // Configura o modo CTC = OCR0A
 				OCR0A = (F_CPU/(2*freq))-1;
 				}
 			else if(port == P5){
-				set_bit(TCCR0B, WGM01); // Ativa o modo CTC
-				set_bit(TCCR0B, COM0A0); // Configura o modo CTC = OCR0B
+				_SET_BIT(TCCR0B, WGM01); // Ativa o modo CTC
+				_SET_BIT(TCCR0B, COM0A0); // Configura o modo CTC = OCR0B
 				OCR0B = (F_CPU/(2*freq))-1;
 			}			
 			else {
@@ -92,15 +92,15 @@ namespace zeduino {
 			#endif
 			
 			if(port == P6){
-				set_bit(TCCR0A, WGM00);
-				set_bit(TCCR0A, WGM01); // Ativa o modo Fast PWM
-				set_bit(TCCR0A, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
+				_SET_BIT(TCCR0A, WGM00);
+				_SET_BIT(TCCR0A, WGM01); // Ativa o modo Fast PWM
+				_SET_BIT(TCCR0A, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
 				OCR0A = active_cicle;
 			}
 			else if(port == P5){
-				set_bit(TCCR0B, WGM00);
-				set_bit(TCCR0B, WGM01); // Ativa o modo Fast PWM
-				set_bit(TCCR0B, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
+				_SET_BIT(TCCR0B, WGM00);
+				_SET_BIT(TCCR0B, WGM01); // Ativa o modo Fast PWM
+				_SET_BIT(TCCR0B, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
 				OCR0B = active_cicle;
 			}
 			else {

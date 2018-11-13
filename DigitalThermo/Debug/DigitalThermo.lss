@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000070  00000000  00000000  00004360  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000058a9  00000000  00000000  000043d0  2**0
+  6 .debug_info   000058aa  00000000  00000000  000043d0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000b85  00000000  00000000  00009c79  2**0
+  7 .debug_abbrev 00000b98  00000000  00000000  00009c7a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001734  00000000  00000000  0000a7fe  2**0
+  8 .debug_line   00001734  00000000  00000000  0000a812  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000014c  00000000  00000000  0000bf34  2**2
+  9 .debug_frame  0000014c  00000000  00000000  0000bf48  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000b73  00000000  00000000  0000c080  2**0
+ 10 .debug_str    00000b73  00000000  00000000  0000c094  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00006df0  00000000  00000000  0000cbf3  2**0
+ 11 .debug_loc    00006df0  00000000  00000000  0000cc07  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001e0  00000000  00000000  000139e3  2**0
+ 12 .debug_ranges 000001e0  00000000  00000000  000139f7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1094,7 +1094,7 @@ void * operator new(size_t size) {
      742:	0e 94 c5 1c 	call	0x398a	; 0x398a <malloc>
      746:	8c 01       	movw	r16, r24
 			
-			public: enum EOperationMode {COMMAND = 0, DATA = 1};
+			private: enum EOperationMode {COMMAND = 0, DATA = 1};
 			
 			private: EPort _pMode, _pPulse, _ports[4];
 			
@@ -1127,7 +1127,7 @@ void * operator new(size_t size) {
 					port::mode(_ports[i], OUTPUT);
      776:	61 e0       	ldi	r22, 0x01	; 1
      778:	0e 94 6e 00 	call	0xdc	; 0xdc <_ZN7zeduino4port4modeENS0_5EPortENS0_5EModeE>
-			public: enum EOperationMode {COMMAND = 0, DATA = 1};
+			private: enum EOperationMode {COMMAND = 0, DATA = 1};
 			
 			private: EPort _pMode, _pPulse, _ports[4];
 			
@@ -4976,11 +4976,11 @@ namespace zeduino {
     2122:	00 c0       	rjmp	.+0      	; 0x2124 <__stack+0x1825>
     2124:	00 00       	nop
     2126:	01 97       	sbiw	r24, 0x01	; 1
+		inline uint8 clear_bit(byte w, uint8 pos) {
 			return _CLEAR_BIT(w, pos);
 		}
 		
 		inline void delay_ms(uint16 time) {
-			// TODO: Implementar em assembly
 			while (time > 0) {
     2128:	c1 f7       	brne	.-16     	; 0x211a <__stack+0x181b>
     212a:	41 50       	subi	r20, 0x01	; 1
@@ -5488,11 +5488,11 @@ void * operator new(size_t size) {
     2466:	00 c0       	rjmp	.+0      	; 0x2468 <__stack+0x1b69>
     2468:	00 00       	nop
     246a:	01 97       	sbiw	r24, 0x01	; 1
+		inline uint8 clear_bit(byte w, uint8 pos) {
 			return _CLEAR_BIT(w, pos);
 		}
 		
 		inline void delay_ms(uint16 time) {
-			// TODO: Implementar em assembly
 			while (time > 0) {
     246c:	c1 f7       	brne	.-16     	; 0x245e <__stack+0x1b5f>
     246e:	41 50       	subi	r20, 0x01	; 1

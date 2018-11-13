@@ -9,7 +9,8 @@ For now, we have 4 different components ready to use:
 - Led;
 - Button;
 - 7 Segment Display;
-- Ultrassonic Sensor;
+- Display LCD 16x2;
+- Digital temperature/humidity sensor;
 <br/>
 Also, it has functions that provides delay with variable time parameter, easy I/O manipulation (e.g. enabling a port, or set a port as input/output), wave form generation and serial communication, so feel free to use the good old printf. <br/>
 Another feature is a "main" interface, replacing the default main function of your C++ code with a setup and loop function that you gonna implement (as well as Arduino).
@@ -17,10 +18,8 @@ Another feature is a "main" interface, replacing the default main function of yo
 # Example
 
 ```c++
-#define F_CPU 16000000UL
 #define ZEDUINO_LAUNCHER // This tells the compiler that you'll use the setup and loop function, 
                          // otherwise you'll need to create your own main and main loop
-#define ZEDUINO_AUTO	 // Automatic set mode (input/output) inside components constructors;
 
 #include <zeduino/zeduino.hpp>
 
@@ -28,7 +27,6 @@ using namespace zeduino;
 
 component::Led *led; // Simple global variable that refers to a led component
 
-// Called before entering the main loop
 void setup() {
 	// port::mode(P0, OUTPUT);    // Not necessery if ZEDUINO_AUTO is defined
 	led = new component::Led(P0); // Create a new instance of Led connected to the port 0
@@ -38,41 +36,37 @@ void setup() {
 void loop() {
 	led->Toggle();        // Toggle the led state (on/off)
 	util::delay_ms(1000); // Wait 1 second before continue
-  // instead you can use led->Blink(1000);
-}
 ```
 # Usefull Information
 This library was tested using an Arduino UNO.
 
 # Components
-The components are implemented as classes.
+The components are implemented as classes inside the namespace zeduino::component.
 
-Led:
-- Constructor Led(EPort) has as parameter the identifier of the port to be used to set the led (P0 to P13).
-- IsOn() returns true if the led is on or false in case it is not.
-- TurnOn() is void type and turns on the led.
-- TurnOn(bool) turns on the led if the parameter is true and turns off the led in case it is false.
-- TurnOff() turns off the led.
-- Toggle() turns on and off the led according to the previous state of it.
-- Blink(uint16) makes the led blink according to the parameter, which an integer that sets the quantity of time the led is on and off in miliseconds.
+- Led:
+  - Led(EPort e): instantitate a Led connected to the port e;
+  - bool IsOn(): returns true if the led is on or false in case it is not;
+  - void TurnOn(): turns on the led;
+  - void TurnOn(bool on): turns the led on or off;
+  - void TurnOff(): turns off the led;
+  - void Toggle(): toggle the led state;
+  - void Blink(uint16 time): toggle the led, waits time in millis and toggle the led again;
 
-Button:
-- Constructor Button(Eport) has as parameter the identifier of the port to be used to set the button (P0 to P13).
-- IsPressed() returns true if the button is pressed and false if it is not.
-- JustPressed() returns true if the button have just been pressed or false if it hasn't.
-- JustReleased() returns true if the button have just been released or false if it hasn't.
+- Button:
+  - Button(EPort e): instantiate a Button connected to the port e;
+  - bool IsPressed(): returns true if the Button is current pressed;
+  - bool JustPressed(): returns true if the Button was just pressed;
+  - bool JustReleased(): returns true if the Button was just released;
+.
+- Display7:
+  - Display7(EType, EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h): EType can be either CATHODE/ANODE;
+  - void SetDotVisibility(bool visibility): set the visibility of the dot on the display;
+  - bool IsDotVisible(): check if the dot is visible;
+  - void SetValue(uint8 value): set the value on the display in rage of 0 and 15;
 
-Display7:
-- Etype can be CATHODE or ANODE.
-- Constructor Display7(EType, Eport, Eport, Eport, Eport, Eport, Eport, Eport, Eport) has as parameters if it's CATHODE or ANODE and the ports from a to h.
-- Constructor Display7 can also be used without the first parameter (EType), in this case the display is by default set as ANODE.
-- SetDotVisibility(bool) enables the dot from the display.
-- IsDotVisible() returns true if the dot is visible and false if it's not.
-- SetValue(uint8) has as parameter the hexadecimal to be displayed from 0 to 15, if the value is below 0 then 0 will be displayed. If the value is above 15 then 15 will be displayed.
-
-Sonar:
-- Constructor Sonar(Eport, Eport) has as first parameter the port to be used as trigger and the second parameter is the echo port.
-- ReadDistance() returns an integer that represents the distance from the sonar to the object that reflects it sound waves.
+- Sonar:
+  - Sonar(EPort trigger, EPort echo);
+  - uint16 ReadDistance(): measure the distance from the sensor
 
 # Util.hpp
 Here you can find the implementations of delay in microseconds and miliseconds.

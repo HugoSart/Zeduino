@@ -27,9 +27,7 @@ namespace zeduino {
 			private: const EPort _port;
 			
 			public: Led(EPort port) : _port(port) {
-				#ifdef ZEDUINO_AUTO
 				mode(port, OUTPUT);
-				#endif
 			}
 			
 			public: inline bool IsOn() { return is_enabled(_port); }
@@ -54,9 +52,7 @@ namespace zeduino {
 			private: bool _lastState = false;
 		
 			public: Button(EPort input) : _input(input) {
-				#ifdef ZEDUINO_AUTO
 				mode(input, INPUT);
-				#endif
 			}
 			
 			public: inline bool IsPressed() {
@@ -105,10 +101,8 @@ namespace zeduino {
 			
 			public: Display7(EType type, EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : type(type) {
 				_port[0] = a; _port[1] = b; _port[2] = c; _port[3] = d; _port[4] = e; _port[5] = f; _port[6] = g; _port[7] = h; 
-				#ifdef ZEDUINO_AUTO
 				for (auto &p : _port)
 					mode(p, OUTPUT);
-				#endif
 			}
 			
 			public: Display7(EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h) : Display7(ANODE, a, b, c, d, e, f, g, h) {}
@@ -164,10 +158,8 @@ namespace zeduino {
 			private: uint16 count;
 			
 			public: Sonar(EPort triggerPort, EPort echoPort) : _triggerPort(triggerPort), _echoPort(echoPort) {
-				#ifdef ZEDUINO_AUTO
 				mode(triggerPort, OUTPUT);
 				mode(echoPort, INPUT);
-				#endif
 			}
 					
 			public: uint16 ReadDistance() {
@@ -190,6 +182,163 @@ namespace zeduino {
 				
 			}
 			
+		};
+		
+		class DHT11 : public Component {
+			
+			private: EPort _port;
+			private: uint8 _cache[5] = {0};
+		
+			public: DHT11(EPort port) : _port(port) {
+				util::delay_ms_static(1000);
+			}
+			
+			public: int8 ReadTemperature() {
+				return _cache[2];
+			}
+			
+			public: int8 ReadHumidity() {
+				return _cache[0];
+			}
+				
+			public: void Update() {
+				
+				RequestUpdate();
+				ClearCache();
+				
+				uint8 reg = 0;
+				for (uint8 i = 0; i < 40; i++) {
+					
+					while (!read(_port));
+					
+					uint8 count = 0;
+					while(read(_port) && count <= 35) {
+						util::delay_us_static(2);
+						count++;
+					}
+					
+					if (count >= 14) {						
+						_cache[reg] = util::set_bit(_cache[reg], i % 8);
+						printf("_cache[%d] = %d\n", reg, _cache[reg]);
+					}
+					if (i % 8 == 0) reg++;
+					
+				}
+				
+			}
+			
+			private: inline void ClearCache() {
+				for (int i = 0; i < 5; i++)
+					_cache[i] = 0;
+			}
+			
+			private: inline void RequestUpdate() {
+				
+				mode(_port, OUTPUT);
+				enable(_port);
+				disable(_port);
+				util::delay_ms_static(20);
+				enable(_port);
+				mode(_port, INPUT);
+				
+				while (read(_port));
+				while (!read(_port));
+				while (read(_port));
+				
+			}
+			
+		};
+		
+		class DisplayLCD : public Component {
+			
+			private: enum EOperationMode {COMMAND = 0, DATA = 1};
+			
+			private: EPort _pMode, _pPulse, _ports[4];
+			
+			public: DisplayLCD(EPort mode, EPort pulse, EPort ports[]) : _pMode(mode), _pPulse(pulse) {
+				for (int i = 0 ; i < 4; i++) {
+					_ports[i] = ports[i];
+					port::mode(_ports[i], OUTPUT);
+				}
+				port::mode(_pMode, OUTPUT);
+				port::mode(_pPulse, OUTPUT);
+				
+				util::delay_ms_static(20);
+				SendCommand(0x33);
+				SendCommand(0x32);
+				SendCommand(0x28);
+				SendCommand(0x0C);
+				SendCommand(0x06);
+				SendCommand(0x01);
+				util::delay_ms_static(2);
+			}
+			
+				
+			public: void Write(char str[]) {
+				ClearScreen();
+				SendCommand(0x80);
+				for (int i = 0; i < 32 && str[i] != '\0'; i++) {
+					if (i == 16 || str[i] == '\n') SendCommand(0xC0);
+					Write(str[i]);
+				}
+			}
+			
+			public: void Write(char c) {
+				SetUpperNibble(c);
+				SetOperationMode(DATA);
+				SetEnabled(true);
+				util::delay_us_static(1);
+				SetEnabled(false);
+				util::delay_us_static(200);
+				SetLowerNibble(c);
+				SetEnabled(true);
+				util::delay_us_static(1);
+				SetEnabled(false);
+				util::delay_ms_static(2);
+			}
+			
+			public: void ClearScreen() {
+				SendCommand(0x01);
+				util::delay_ms_static(2);
+				SendCommand(0x80);
+			}
+			
+			private: void SendCommand(byte cmd) {
+				SetUpperNibble(cmd);
+				SetOperationMode(COMMAND);
+				SetEnabled(true);
+				util::delay_us_static(1);
+				SetEnabled(false);
+				util::delay_us_static(200);
+				SetLowerNibble(cmd);
+				SetEnabled(true);	
+				util::delay_us_static(1);
+				SetEnabled(false);
+				util::delay_ms_static(2);
+			}
+			
+			private: inline void SetOperationMode(EOperationMode m) {
+				port::enable(_pMode, m);
+			}
+			
+			private: inline void SetEnabled(bool b) {
+				enable(_pPulse, b);
+			}
+			
+			private: inline void SetUpperNibble(uint8 data) {
+				enable(_ports[0], util::get_bit(data, 4));
+				enable(_ports[1], util::get_bit(data, 5));
+				enable(_ports[2], util::get_bit(data, 6));
+				enable(_ports[3], util::get_bit(data, 7));
+			}
+			
+			private: inline void SetLowerNibble(uint8 data) {
+				enable(_ports[0], util::get_bit(data, 0));
+				enable(_ports[1], util::get_bit(data, 1));
+				enable(_ports[2], util::get_bit(data, 2));
+				enable(_ports[3], util::get_bit(data, 3));
+			}
+				
 		};
 		
 	}

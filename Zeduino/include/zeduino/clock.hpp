@@ -20,7 +20,7 @@ namespace zeduino {
 		};
 		
 		inline void prescaler(EPrescaler p) {
-			set_bit(TCCR1B, p);
+			_SET_BIT(TCCR1B, p);
 		}
 		
 	}

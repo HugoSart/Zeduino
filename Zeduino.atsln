@@ -7,6 +7,8 @@ Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "ZeduinoTest", "ZeduinoTest\
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Zeduino", "Zeduino\Zeduino.cppproj", "{7004B156-5E80-40C2-A623-54C1D6E2EC0C}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "DigitalThermo", "DigitalThermo\DigitalThermo.cppproj", "{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -21,6 +23,10 @@ Global
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Debug|AVR.Build.0 = Debug|AVR
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Release|AVR.ActiveCfg = Release|AVR
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Release|AVR.Build.0 = Release|AVR
+		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Debug|AVR.ActiveCfg = Debug|AVR
+		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Debug|AVR.Build.0 = Debug|AVR
+		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Release|AVR.ActiveCfg = Release|AVR
+		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

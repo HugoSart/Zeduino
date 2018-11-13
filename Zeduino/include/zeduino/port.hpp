@@ -25,33 +25,33 @@ namespace zeduino {
 		};
 		
 		void mode(EPort port, EMode m) {
-			if (m == INPUT) clr_bit(fcrio(port), nmr(port));
-			else if (m == OUTPUT) set_bit(fcrio(port), nmr(port));
+			if (m == INPUT) _CLEAR_BIT(fcrio(port), nmr(port));
+			else if (m == OUTPUT) _SET_BIT(fcrio(port), nmr(port));
 		}
 		
 		inline EMode get_mode(EPort port) {
-			return (EMode)tst_bit(fcrio(port), nmr(port));
+			return (EMode)_GET_BIT(fcrio(port), nmr(port));
 		}
 		
 		inline void enable(EPort port) {
-			set_bit(fcrof(port), nmr(port));
+			_SET_BIT(fcrof(port), nmr(port));
 		}
 		
 		inline void enable(EPort port, bool b) {
-			if (b) set_bit(fcrof(port), nmr(port));
-			else clr_bit(fcrof(port), nmr(port));
+			if (b) _SET_BIT(fcrof(port), nmr(port));
+			else _CLEAR_BIT(fcrof(port), nmr(port));
 		}
 		
 		inline void disable(EPort port) {
-			clr_bit(fcrof(port), nmr(port));
+			_CLEAR_BIT(fcrof(port), nmr(port));
 		}
 		
 		inline bool is_enabled(EPort port) {
-			return tst_bit(fcrof(port), nmr(port));
+			return _GET_BIT(fcrof(port), nmr(port));
 		}
 		
 		inline bool read(EPort port) {
-			return tst_bit(fcrin(port), nmr(port));
+			return _GET_BIT(fcrin(port), nmr(port));
 		}
 		
 		inline void toggle(EPort port) {

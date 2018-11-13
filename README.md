@@ -57,16 +57,28 @@ The components are implemented as classes inside the namespace zeduino::componen
   - bool IsPressed(): returns true if the Button is current pressed;
   - bool JustPressed(): returns true if the Button was just pressed;
   - bool JustReleased(): returns true if the Button was just released;
-.
+
+- Sonar:
+  - Sonar(EPort trigger, EPort echo);
+  - uint16 ReadDistance(): measure the distance from the sensor;
+  
 - Display7:
   - Display7(EType, EPort a, EPort b, EPort c, EPort d, EPort e, EPort f, EPort g, EPort h): EType can be either CATHODE/ANODE;
   - void SetDotVisibility(bool visibility): set the visibility of the dot on the display;
   - bool IsDotVisible(): check if the dot is visible;
   - void SetValue(uint8 value): set the value on the display in rage of 0 and 15;
-
-- Sonar:
-  - Sonar(EPort trigger, EPort echo);
-  - uint16 ReadDistance(): measure the distance from the sensor
+  
+- DisplayLCD (4-bit):
+  - DisplayLCD(EPort mode, EPort pulse, EPort ports[]);
+  - void Write(char c): write a character on the current cursor position;
+  - void Write(char str[]): write a string on de screen;
+  - void ClearScreen(): clear the screen and reset the cursor;
+  
+- DHT11:
+  - DHT11(EPort port);
+  - void Update(): measure the sensor temperature and humidity and caches it. Must be called before any reads;
+  - void ReadTemperature(): read the cached temperature;
+  - void ReadHumidity(): read the cached humidity;
 
 # Util.hpp
 Here you can find the implementations of delay in microseconds and miliseconds.

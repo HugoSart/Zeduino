@@ -15,31 +15,6 @@ For now, we have 4 different components ready to use:
 Also, it has functions that provides delay with variable time parameter, easy I/O manipulation (e.g. enabling a port, or set a port as input/output), wave form generation and serial communication, so feel free to use the good old printf. <br/>
 Another feature is a "main" interface, replacing the default main function of your C++ code with a setup and loop function that you gonna implement (as well as Arduino).
 
-# Example
-
-```c++
-#define ZEDUINO_LAUNCHER // This tells the compiler that you'll use the setup and loop function, 
-                         // otherwise you'll need to create your own main and main loop
-
-#include <zeduino/zeduino.hpp>
-
-using namespace zeduino;
-
-component::Led *led; // Simple global variable that refers to a led component
-
-void setup() {
-	// port::mode(P0, OUTPUT);    // Not necessery if ZEDUINO_AUTO is defined
-	led = new component::Led(P0); // Create a new instance of Led connected to the port 0
-}
-
-// Function called inside an infinite loop
-void loop() {
-	led->Toggle();        // Toggle the led state (on/off)
-	util::delay_ms(1000); // Wait 1 second before continue
-```
-# Usefull Information
-This library was tested using an Arduino UNO.
-
 # Components
 The components are implemented as classes inside the namespace zeduino::component.
 
@@ -100,3 +75,31 @@ Here you can find I/O manipulation and wave form generation.
 - toggle(Eport) enable the port if its disabled and the opposite if its disabled.
 - ctc(EPort, int) sets the specified port to generate wave form in the frequency passed as second parameter. Only works on EPorts P5 and P6. In the other Eport it only sends digital sign.
 - pwm(Eport, int) sets the specified port to generate pwm and the second parameter establishes the active cycle duty. It can be from 0 to 255, where 0 represents 0% and 255 represents 100% of active cycle duty. Also only works on Eports P5 and P6. Other ports only sends digital sign.
+
+# Example
+
+```c++
+#define ZEDUINO_LAUNCHER // This tells the compiler that you'll use the setup and loop function, 
+                         // otherwise you'll need to create your own main and main loop
+
+#include <zeduino/zeduino.hpp>
+
+using namespace zeduino;
+
+component::Led *led; // Simple global variable that refers to a led component
+
+void setup() {
+	// port::mode(P0, OUTPUT);    // Not necessery if ZEDUINO_AUTO is defined
+	led = new component::Led(P0); // Create a new instance of Led connected to the port 0
+}
+
+// Function called inside an infinite loop
+void loop() {
+	led->Toggle();        // Toggle the led state (on/off)
+	util::delay_ms(1000); // Wait 1 second before continue
+	// you can use led->Blink(1000); instead
+}
+```
+
+# Usefull Information
+This library was tested using an Arduino UNO.

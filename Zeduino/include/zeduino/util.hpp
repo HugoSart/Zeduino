@@ -40,6 +40,7 @@ namespace zeduino {
 	
 	namespace util {
 		
+<<<<<<< HEAD
 		inline uint8 get_bit(byte w, uint8 pos) {
 			return _GET_BIT(w, pos);
 		}
@@ -54,16 +55,34 @@ namespace zeduino {
 		
 		inline void delay_ms(uint16 time) {
 			// TODO: Implementar em assembly
+=======
+		inline void delay_ms(uint16 time) {
+>>>>>>> 30e4a19be69aaa668739b4a668c2222fe1d955ac
 			while (time > 0) {
-				_delay_ms(1);
+				asm volatile(
+					"    ldi  r18, 21"	"\n"
+					"    ldi  r19, 199"	"\n"
+					"1:  dec  r19"		"\n"
+					"    brne 1b"		"\n"
+					"    dec  r18"		"\n"
+					"    brne 1b"		"\n"
+				);
 				time--;
 			}
 		}
 		
 		inline void delay_us(uint16 time) {
+<<<<<<< HEAD
 			// TODO: Implementar em assembly
+=======
+>>>>>>> 30e4a19be69aaa668739b4a668c2222fe1d955ac
 			while (time > 0) {
-				_delay_us(1);
+				asm volatile(
+					"    ldi  r18, 5"	"\n"
+					"1:  dec  r18"		"\n"
+					"    brne 1b"		"\n"
+					"    nop"			"\n"
+				);
 				time--;
 			}
 		}

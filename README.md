@@ -9,6 +9,7 @@ For now, we have 4 different components ready to use:
 - Led;
 - Button;
 - 7 Segment Display;
+- Sonar;
 - Display LCD 16x2;
 - DHT11 Sensor;
 <br/>

@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Atmel Studio Solution File, Format Version 11.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "ZeduinoTest", "ZeduinoTest\ZeduinoTest.cppproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
-EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Zeduino", "Zeduino\Zeduino.cppproj", "{7004B156-5E80-40C2-A623-54C1D6E2EC0C}"
 EndProject
-Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "DigitalThermo", "DigitalThermo\DigitalThermo.cppproj", "{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5ABF6E5A-CB11-4EE8-9EFA-CFDB2B1B9E5F}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "DigitalThermo", "Examples\DigitalThermo\DigitalThermo.cppproj", "{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "ReverseSensor", "Examples\ReverseSensor\ReverseSensor.cppproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,6 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.ActiveCfg = Debug|AVR
-		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
-		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
-		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Debug|AVR.ActiveCfg = Debug|AVR
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Debug|AVR.Build.0 = Debug|AVR
 		{7004B156-5E80-40C2-A623-54C1D6E2EC0C}.Release|AVR.ActiveCfg = Release|AVR
@@ -27,8 +25,16 @@ Global
 		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Debug|AVR.Build.0 = Debug|AVR
 		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Release|AVR.ActiveCfg = Release|AVR
 		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB}.Release|AVR.Build.0 = Release|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.ActiveCfg = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FE316DEF-E51A-4A14-944E-CB6F90F0D9AB} = {5ABF6E5A-CB11-4EE8-9EFA-CFDB2B1B9E5F}
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897} = {5ABF6E5A-CB11-4EE8-9EFA-CFDB2B1B9E5F}
 	EndGlobalSection
 EndGlobal

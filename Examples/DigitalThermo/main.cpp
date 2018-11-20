@@ -16,6 +16,7 @@ component::DisplayLCD *lcd;
 component::DHT11 *dht11;
 
 void setup() {
+	
 	EPort ports[] = {P5, P4, P3, P2};
 	lcd = new component::DisplayLCD(P12, P11, ports);
 	lcd->Write("Zeduino    DHT11Iniciando  ");
@@ -31,19 +32,27 @@ void setup() {
 		lcd->Write('.');
 		util::delay_ms(500);
 	}
+	
+	char str[40] = "Temp.        0 CHumidade     0 %%";
+	lcd->Write(str);
+	
 }
 
 void loop() {
+
+	component::DHT11::Response response = dht11->Read();
 	
-	static int8 temp = 0, hum = 0;
-	dht11->Update();
-	temp = dht11->ReadTemperature();
-	hum = dht11->ReadHumidity();
+	char tempStr[5], humStr[5];
 	
-	printf("\n%2d, %2d\n\n", temp, hum);
-	
-	char str[32];
-	sprintf(str, "Temp.     %4d CHumidade  %4d %%", temp, hum);
-	lcd->Write(str);
+	if (response.checksum) {
+		sprintf(tempStr, "%4d", response.temperature);
+		sprintf(humStr, "%4d", response.humidity);
+	} else {
+		sprintf(tempStr, "ERRO");
+		sprintf(humStr, "ERRO");
+	}
+
+	lcd->Write(tempStr, 0, 10);
+	lcd->Write(humStr, 1, 10);
 	
 }

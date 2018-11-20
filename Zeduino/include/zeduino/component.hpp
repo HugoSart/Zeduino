@@ -187,63 +187,60 @@ namespace zeduino {
 		class DHT11 : public Component {
 			
 			private: EPort _port;
-			private: uint8 _cache[5] = {0};
 		
-			public: DHT11(EPort port) : _port(port) {
-				util::delay_ms_static(1000);
-			}
+			public: DHT11(EPort port) : _port(port) {}
+				
+			public: struct Response {
+				uint32 temperature : 8;
+				uint32 temperatureDecimal : 8;
+				uint32 humidity : 8;
+				uint32 humidityDecimal : 8;
+				bool checksum;
+			};
 			
-			public: int8 ReadTemperature() {
-				return _cache[2];
-			}
+			private: inline void Request() {
 			
-			public: int8 ReadHumidity() {
-				return _cache[0];
-			}
-				
-			public: void Update() {
-				
-				RequestUpdate();
-				ClearCache();
-				
-				uint8 reg = 0;
-				for (uint8 i = 0; i < 40; i++) {
-					
-					while (!read(_port));
-					
-					uint8 count = 0;
-					while(read(_port) && count <= 35) {
-						util::delay_us_static(2);
-						count++;
-					}
-					
-					if (count >= 14) {						
-						_cache[reg] = util::set_bit(_cache[reg], i % 8);
-						printf("_cache[%d] = %d\n", reg, _cache[reg]);
-					}
-					if (i % 8 == 0) reg++;
-					
-				}
-				
-			}
-			
-			private: inline void ClearCache() {
-				for (int i = 0; i < 5; i++)
-					_cache[i] = 0;
-			}
-			
-			private: inline void RequestUpdate() {
-				
-				mode(_port, OUTPUT);
+				port::mode(_port, OUTPUT);	
 				enable(_port);
+				util::delay_ms_static(1000);
 				disable(_port);
 				util::delay_ms_static(20);
 				enable(_port);
-				mode(_port, INPUT);
-				
+			
+				port::mode(_port, INPUT);
 				while (read(_port));
 				while (!read(_port));
 				while (read(_port));
+				
+			}
+			
+			private: inline uint8 Receive() {
+				uint8 ret = 0;
+				for (int i = 0; i < 8; i++) {
+					while (!read(_port));
+					util::delay_us_static(30);
+					if (read(_port)) ret = (ret << 1) | (0x01);
+					else ret = (ret << 1);
+					while (read(_port));
+				}
+				return ret;
+			}
+			
+			public: inline Response Read() {
+				
+				Response response = {};
+				uint8 checksum = 0;
+				
+				Request();
+				
+				response.humidity = Receive();
+				response.humidityDecimal = Receive();
+				response.temperature = Receive();
+				response.temperatureDecimal = Receive();
+				checksum = Receive();
+				
+				response.checksum = response.humidity + response.humidityDecimal + response.temperature + response.temperatureDecimal == checksum;
+				return response;			
 				
 			}
 			
@@ -277,6 +274,16 @@ namespace zeduino {
 			public: void Write(char str[]) {
 				ClearScreen();
 				SendCommand(0x80);
+				for (int i = 0; i < 32 && str[i] != '\0'; i++) {
+					if (i == 16 || str[i] == '\n') SendCommand(0xC0);
+					Write(str[i]);
+				}
+			}
+			
+			public: void Write(char str[], uint8 row, uint8 pos) {
+				SendCommand(0x80);
+				if (row == 0 && pos < 16) SendCommand((pos & 0x0F) | 0x80);
+				else if (row == 1 && pos < 16) SendCommand((pos & 0x0F) | 0xC0);
 				for (int i = 0; i < 32 && str[i] != '\0'; i++) {
 					if (i == 16 || str[i] == '\n') SendCommand(0xC0);
 					Write(str[i]);

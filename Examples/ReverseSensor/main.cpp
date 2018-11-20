@@ -7,15 +7,15 @@
 
 using namespace zeduino;
 
+component::Led *led;
+component::Sonar *sonar;
+
 void setup() {
-	//port::mode(P5, OUTPUT);
+	led = new component::Led(P13);
+	sonar = new component::Sonar(P2, P3);
 }
 
 void loop() {
-	//port::enable(P5);
-	port::ctc(P6, 2000);
-	//util::delay_ms(1000);
-	//port::disable(P5);
-	//util::delay_ms(1000);
+	led->Blink(sonar->ReadDistance() * 100);
 }
 

@@ -10,12 +10,17 @@ For now, we have 4 different components ready to use:
 - Button;
 - 7 Segment Display;
 - Display LCD 16x2;
-- Digital temperature/humidity sensor;
+- DHT11 Sensor;
 <br/>
 Also, it has functions that provides delay with variable time parameter, easy I/O manipulation (e.g. enabling a port, or set a port as input/output), wave form generation and serial communication, so feel free to use the good old printf. <br/>
 Another feature is a "main" interface, replacing the default main function of your C++ code with a setup and loop function that you gonna implement (as well as Arduino).
 
-# Components
+# Namespaces
+This library is divided into namespaces. There are tree namespaces inside the master one: component, port and util. 
+<br/>
+The component namespace contains all the components like Led, Button etc. The port namespace contain pin/port functions, such as mode(EPort, EMode) to define the mode (INPUT/OUTPUT) for a given port (P0 to P13) or read(EPort) to read the value of a port defined as INPUT. The util namespace has some extras functions, like delay_ms(uint16) or set_bit(byte b, uint8 pos) (byte is a typedef for uint8, and uint8 is a typedef for uint8_t).
+
+# zeduino::component
 The components are implemented as classes inside the namespace zeduino::component.
 
 - Led:
@@ -47,21 +52,25 @@ The components are implemented as classes inside the namespace zeduino::componen
   - DisplayLCD(EPort mode, EPort pulse, EPort ports[]);
   - void Write(char c): write a character on the current cursor position;
   - void Write(char str[]): write a string on de screen;
+  - void Write(char str[], uint8 row, uint8 pos): write a string starting at row and pos;
   - void ClearScreen(): clear the screen and reset the cursor;
   
 - DHT11:
   - DHT11(EPort port);
-  - void Update(): measure the sensor temperature and humidity and caches it. Must be called before any reads;
-  - void ReadTemperature(): read the cached temperature;
-  - void ReadHumidity(): read the cached humidity;
+  - DHT11::Response Read(): read the sensor and return a struct with the results;
 
-# Util.hpp
+# zeduino::util
 Here you can find the implementations of delay in microseconds and miliseconds.
 
-- delay_ms(uint16) creates a delay based on the parameter value in miliseconds.
-- delay_us(uint16) creates a delay based on the parameter value in microseconds.
+- void delay_ms(uint16)                 : creates a delay based on the parameter value in miliseconds using a loop of 1ms;
+- void delay_us(uint16)			: creates a delay based on the parameter value in microseconds using a loop of 1us;
+- void delay_ms_static(uint16)		: bind to the standard _delay_ms of avr;
+- void delay_us_static(uint16)		: bind to the standard _delay_us of avr;
+- uint8 get_bit(byte w, uint8 p)	: return the value of the p-th bit of the byte w);
+- uint8 set_bit(byte w, uint8 p)	: return a copy of w with the p-th bit set as high;
+- uint8 clear_bit(byte w, uint8 p)	: return a copy of w with the p-th bit set as low;
 
-# Port.hpp
+# zeduino::port
 Here you can find I/O manipulation and wave form generation.
 
 - enum EMode can assume either INPUT or OUTPUT.
